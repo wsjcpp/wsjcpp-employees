@@ -1,3 +1,7 @@
+.wsjcpp/*
+tmp/*
+wsjcpp-employees
+
 # Prerequisites
 *.d
 
