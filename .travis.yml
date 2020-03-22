@@ -22,6 +22,6 @@ script:
   - make
   - cd ..
   - ./wsjcpp-employees
-  - cd ../unit-tests.wsjcpp
+  - cd unit-tests.wsjcpp
   - ./build_simple.sh
   - ./unit-tests
