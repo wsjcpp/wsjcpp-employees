@@ -34,6 +34,10 @@ list (APPEND WSJCPP_SOURCES "../src/wsjcpp_employees.cpp")
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_employ1.h")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_employ1.cpp")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_employ_runtime_global_cache.h")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_employ_runtime_global_cache.cpp")
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.user-custom.txt)
 

@@ -78,7 +78,8 @@ class YourEmploy : public WSJCppEmployBase {
     public:
         YourEmploy();
         static std::string name() { return "YourEmploy"; }
-        void do();
+        virtual bool init() override;
+        void doSomething();
     private:
         std::string TAG;
 };

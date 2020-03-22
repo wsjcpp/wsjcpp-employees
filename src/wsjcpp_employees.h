@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <mutex>
 #include <wsjcpp_core.h>
 
 // ---------------------------------------------------------------------
@@ -16,8 +17,8 @@ public:
         const std::vector<std::string> &vLoadAfter
     );
     virtual ~WSJCppEmployBase();
-    virtual bool init();
-    virtual void deinit();
+    virtual bool init() = 0;
+    virtual bool deinit() = 0;
     const std::vector<std::string> &loadAfter();
 
 private:
@@ -38,6 +39,7 @@ class WSJCppEmployees {
         static void deinitGlobalVariables();
         static void addEmploy(const std::string &sName, WSJCppEmployBase* pEmploy);
         static bool init(const std::vector<std::string> &vLoadAfter);
+        static bool deinit();
 };
 
 // ---------------------------------------------------------------------
@@ -73,7 +75,8 @@ class WJSCppEmployRuntimeGlobalCache : public WSJCppEmployBase {
     public:
         WJSCppEmployRuntimeGlobalCache();
         static std::string name() { return "WJSCppEmployRuntimeGlobalCache"; }
-        virtual bool init();
+        virtual bool init() override;
+        virtual bool deinit() override;
         void set(const std::string &sName, const std::string &sValue);
         bool has(const std::string &sName);
         std::string get(const std::string &sName);
