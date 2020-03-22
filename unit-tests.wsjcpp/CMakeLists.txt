@@ -29,6 +29,8 @@ list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_unit_tests_main.cp
 
 # wsjcpp-employees:v0.0.1
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
+list (APPEND WSJCPP_SOURCES "../src/wsjcpp_employees.h")
+list (APPEND WSJCPP_SOURCES "../src/wsjcpp_employees.cpp")
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")

@@ -18,7 +18,7 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
 
-disptibution:
+distribution:
   - source-file: "src/wsjcpp_employees.h"
     target-file: "wsjcpp_employees.h"
     type: "source-code"
