@@ -79,6 +79,7 @@ class YourEmploy : public WSJCppEmployBase {
         YourEmploy();
         static std::string name() { return "YourEmploy"; }
         virtual bool init() override;
+        virtual bool deinit() override;
         void doSomething();
     private:
         std::string TAG;
@@ -98,12 +99,23 @@ YourEmploy::YourEmploy()
     TAG = YourEmploy::name();
 }
 
+bool YourEmploy::init() {
+    WSJCppLog::info(TAG, "init called");
+    return true; 
+}
+
+bool YourEmploy::deinit() {
+    WSJCppLog::info(TAG, "deinit called");
+    return true;
+}
+
 void YourEmploy::doSomething() {
     WSJCppLog::info(TAG, "doSomething called");
 }
 ```
 
-Now you can call you method for employ
+1. For call ::init you must call `WSJCppEmployees::init({})` in main function
+2. find employ and call you method from any place
 
 ```
 #inluce <your_employ.h>
@@ -112,7 +124,56 @@ void someFunc() {
     YourEmploy *pYourEmploy = findWSJCppEmploy<YourEmploy>();
     pYourEmploy->doSomething();
 }
+
+void main() {
+    ...
+    WSJCppEmployees::init({});
+    someFunc();
+}
 ```
+
+## Initialization employees in order
+
+1. Second employ required init after first
+
+```
+
+// second - will be init after 
+SecondEmploy::SecondEmploy()
+    : WSJCppEmployBase(SecondEmploy::name(), {"FirstEmploy"}) {
+    TAG = SecondEmploy::name();
+}
+
+bool SecondEmploy::init() {
+    // will be called second
+}
+
+// first employ - will be init every time
+FirstEmploy::FirstEmploy()
+    : WSJCppEmployBase(FirstEmploy::name(), {}) {
+    TAG = FirstEmploy::name();
+}
+
+bool SecondEmploy::init() {
+    // will be called first
+}
+```
+Why it can be need? For init some connections or cache data.
+For example, you wanna load some data from database
+
+UsersEmploy
+ - after: DatabaseEmploy
+
+* In DatabaseEmploy::init you can check connection to database and do migration database struct
+* In UsersEmploy::init you can use DatabaseEmploy for load user's tokens on server start
+
+2. You wanna init fork some employs 
+
+Also you can define on init:
+```
+WSJCppEmployees::init({"server-start"})
+```
+So it will be call "::init" employees only there which has this requirements.
 
 
 
