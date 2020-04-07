@@ -4,7 +4,7 @@
 #include <wsjcpp_unit_tests.h>
 
 // Description: TODO
-class UnitTestEmployRuntimeGlobalCache : public WSJCppUnitTestBase {
+class UnitTestEmployRuntimeGlobalCache : public WsjcppUnitTestBase {
     public:
         UnitTestEmployRuntimeGlobalCache();
         virtual void init();

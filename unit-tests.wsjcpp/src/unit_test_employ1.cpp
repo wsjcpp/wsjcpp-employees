@@ -6,7 +6,7 @@
 // ---------------------------------------------------------------------
 
 
-class Employ1 : public WSJCppEmployBase {
+class Employ1 : public WsjcppEmployBase {
     public:
         Employ1();
         static std::string name() { return "Employ1"; };
@@ -23,7 +23,7 @@ class Employ1 : public WSJCppEmployBase {
 REGISTRY_WJSCPP_EMPLOY(Employ1)
 
 Employ1::Employ1() 
-    : WSJCppEmployBase(Employ1::name(), {"unit-test-employ1"}) {
+    : WsjcppEmployBase(Employ1::name(), {"unit-test-employ1"}) {
     TAG = Employ1::name();
 }
 
@@ -55,10 +55,10 @@ std::string Employ1::get() {
 
 // ---------------------------------------------------------------------
 
-REGISTRY_UNIT_TEST(UnitTestEmploy1)
+REGISTRY_WSJCPP_UNIT_TEST(UnitTestEmploy1)
 
 UnitTestEmploy1::UnitTestEmploy1()
-    : WSJCppUnitTestBase("UnitTestEmploy1") {
+    : WsjcppUnitTestBase("UnitTestEmploy1") {
 }
 
 // ---------------------------------------------------------------------
@@ -72,29 +72,29 @@ void UnitTestEmploy1::init() {
 bool UnitTestEmploy1::run() {
     bool bTestSuccess = true;
 
-    WSJCppLog::warn(TAG, "init alone employees");
-    bool bResult = WSJCppEmployees::init({});
+    WsjcppLog::warn(TAG, "init alone employees");
+    bool bResult = WsjcppEmployees::init({});
     compareB(bTestSuccess, "without-employ1", bResult, true);
     if (!bResult) {
         return bTestSuccess;
     }
-    WJSCppEmployRuntimeGlobalCache *pCache = findWSJCppEmploy<WJSCppEmployRuntimeGlobalCache>();
-    WSJCppEmployees::deinit();
+    WJSCppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WJSCppEmployRuntimeGlobalCache>();
+    WsjcppEmployees::deinit();
 
     // start new 
 
-    bResult = WSJCppEmployees::init({"unit-test-employ1"});
+    bResult = WsjcppEmployees::init({"unit-test-employ1"});
     compareB(bTestSuccess, "unit-test-employ1", bResult, true);
     if (!bResult) {
         return bTestSuccess;
     }
 
-    Employ1 *pEmploy1 = findWSJCppEmploy<Employ1>();
+    Employ1 *pEmploy1 = findWsjcppEmploy<Employ1>();
 
     pEmploy1->set("test4562132");
     compareS(bTestSuccess, "value", pEmploy1->get(), "test4562132");
 
-    WSJCppEmployees::deinit();
+    WsjcppEmployees::deinit();
     return bTestSuccess;
 }
 

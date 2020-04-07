@@ -5,14 +5,14 @@ int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
-    if (!WSJCppCore::dirExists(".logs")) {
-        WSJCppCore::makeDir(".logs");
+    if (!WsjcppCore::dirExists(".logs")) {
+        WsjcppCore::makeDir(".logs");
     }
-    WSJCppLog::setPrefixLogFile("wsjcpp-employees");
-    WSJCppLog::setLogDirectory(".logs");
+    WsjcppLog::setPrefixLogFile("wsjcpp-employees");
+    WsjcppLog::setLogDirectory(".logs");
     
-    if (!WSJCppEmployees::init({})) {
-        WSJCppLog::err(TAG, "Could not init employees");
+    if (!WsjcppEmployees::init({})) {
+        WsjcppLog::err(TAG, "Could not init employees");
         return -1;
     }
 

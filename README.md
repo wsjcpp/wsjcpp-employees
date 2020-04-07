@@ -20,7 +20,7 @@ or include this files:
 
 ## How use this
 
-For init you must call `WSJCppEmployees::init({})`
+For init you must call `WsjcppEmployees::init({})`
 
 Example main func:
 ```
@@ -31,15 +31,15 @@ int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
-    if (!WSJCppCore::dirExists(".logs")) {
-        WSJCppCore::makeDir(".logs");
+    if (!WsjcppCore::dirExists(".logs")) {
+        WsjcppCore::makeDir(".logs");
     }
-    WSJCppLog::setPrefixLogFile("wsjcpp-employees");
-    WSJCppLog::setLogDirectory(".logs");
+    WsjcppLog::setPrefixLogFile("wsjcpp-employees");
+    WsjcppLog::setLogDirectory(".logs");
     
     // init employees
-    if (!WSJCppEmployees::init({})) {
-        WSJCppLog::err(TAG, "Could not init employees");
+    if (!WsjcppEmployees::init({})) {
+        WsjcppLog::err(TAG, "Could not init employees");
         return -1;
     }
     return 0;
@@ -58,9 +58,15 @@ Now you can call from any place:
 #inluce <wsjcpp_employees.h>
 
 void someFunc() {
-    WJSCppEmployRuntimeGlobalCache *pCache = findWSJCppEmploy<WJSCppEmployRuntimeGlobalCache>();
+    WJSCppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WJSCppEmployRuntimeGlobalCache>();
     pCache->set("name", "value");
 }
+```
+
+### Example of define you employ use a wsjcpp
+
+```
+wsjcpp generate WsjcppEmploy MyImpl
 ```
 
 ### Example of define you employ (simple)
@@ -69,12 +75,12 @@ void someFunc() {
 
 Example Header `your_employ.h`:
 ```
-#ifndef WSJCPP_EMPLOYEES_H
-#define WSJCPP_EMPLOYEES_H
+#ifndef YOUR_EMPLOY_H
+#define YOUR_EMPLOY_H
 
 #include <wsjcpp_employees.h>
 
-class YourEmploy : public WSJCppEmployBase {
+class YourEmploy : public WsjcppEmployBase {
     public:
         YourEmploy();
         static std::string name() { return "YourEmploy"; }
@@ -85,7 +91,7 @@ class YourEmploy : public WSJCppEmployBase {
         std::string TAG;
 };
 
-#endif // WSJCPP_EMPLOYEES_H
+#endif // YOUR_EMPLOY_H
 ```
 
 Example source-code `your_employ.cpp`:
@@ -95,39 +101,39 @@ Example source-code `your_employ.cpp`:
 REGISTRY_WJSCPP_EMPLOY(YourEmploy)
 
 YourEmploy::YourEmploy()
-    : WSJCppEmployBase(YourEmploy::name(), {}) {
+    : WsjcppEmployBase(YourEmploy::name(), {}) {
     TAG = YourEmploy::name();
 }
 
 bool YourEmploy::init() {
-    WSJCppLog::info(TAG, "init called");
+    WsjcppLog::info(TAG, "init called");
     return true; 
 }
 
 bool YourEmploy::deinit() {
-    WSJCppLog::info(TAG, "deinit called");
+    WsjcppLog::info(TAG, "deinit called");
     return true;
 }
 
 void YourEmploy::doSomething() {
-    WSJCppLog::info(TAG, "doSomething called");
+    WsjcppLog::info(TAG, "doSomething called");
 }
 ```
 
-1. For call ::init you must call `WSJCppEmployees::init({})` in main function
+1. For call ::init you must call `WsjcppEmployees::init({})` in main function
 2. find employ and call you method from any place
 
 ```
 #inluce <your_employ.h>
 
 void someFunc() {
-    YourEmploy *pYourEmploy = findWSJCppEmploy<YourEmploy>();
+    YourEmploy *pYourEmploy = findWsjcppEmploy<YourEmploy>();
     pYourEmploy->doSomething();
 }
 
 void main() {
     ...
-    WSJCppEmployees::init({});
+    WsjcppEmployees::init({});
     someFunc();
 }
 ```
@@ -140,7 +146,7 @@ void main() {
 
 // second - will be init after 
 SecondEmploy::SecondEmploy()
-    : WSJCppEmployBase(SecondEmploy::name(), {"FirstEmploy"}) {
+    : WsjcppEmployBase(SecondEmploy::name(), {"FirstEmploy"}) {
     TAG = SecondEmploy::name();
 }
 
@@ -150,7 +156,7 @@ bool SecondEmploy::init() {
 
 // first employ - will be init every time
 FirstEmploy::FirstEmploy()
-    : WSJCppEmployBase(FirstEmploy::name(), {}) {
+    : WsjcppEmployBase(FirstEmploy::name(), {}) {
     TAG = FirstEmploy::name();
 }
 
@@ -171,7 +177,7 @@ UsersEmploy
 
 Also you can define on init:
 ```
-WSJCppEmployees::init({"server-start"})
+WsjcppEmployees::init({"server-start"})
 ```
 So it will be call "::init" employees only there which has this requirements.
 
