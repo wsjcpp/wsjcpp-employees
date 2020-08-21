@@ -3,6 +3,7 @@ tmp/*
 wsjcpp-employees
 .vscode/*
 .logs/*
+unit-tests.wsjcpp/*.log
 
 # Prerequisites
 *.d

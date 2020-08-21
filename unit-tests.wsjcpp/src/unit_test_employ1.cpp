@@ -20,7 +20,7 @@ class Employ1 : public WsjcppEmployBase {
         std::string m_sValue;
 };
 
-REGISTRY_WJSCPP_EMPLOY(Employ1)
+REGISTRY_WJSCPP_SERVICE_LOCATOR(Employ1)
 
 Employ1::Employ1() 
     : WsjcppEmployBase(Employ1::name(), {"unit-test-employ1"}) {
@@ -78,7 +78,7 @@ bool UnitTestEmploy1::run() {
     if (!bResult) {
         return bTestSuccess;
     }
-    WJSCppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WJSCppEmployRuntimeGlobalCache>();
+    WsjcppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WsjcppEmployRuntimeGlobalCache>();
     WsjcppEmployees::deinit();
 
     // start new 

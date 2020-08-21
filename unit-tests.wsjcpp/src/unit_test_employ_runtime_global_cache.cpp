@@ -25,7 +25,7 @@ bool UnitTestEmployRuntimeGlobalCache::run() {
     if (!bResult) {
         return bTestSuccess;
     }
-    WJSCppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WJSCppEmployRuntimeGlobalCache>();
+    WsjcppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WsjcppEmployRuntimeGlobalCache>();
     pCache->set("name1", "value3y2hf9f3h%%");
     compareB(bTestSuccess, "name1", pCache->has("name1"), true);
     if (pCache->has("name1")) {
