@@ -11,28 +11,25 @@ UnitTestEmployRuntimeGlobalCache::UnitTestEmployRuntimeGlobalCache()
 
 // ---------------------------------------------------------------------
 
-void UnitTestEmployRuntimeGlobalCache::init() {
-    // nothing
+bool UnitTestEmployRuntimeGlobalCache::doBeforeTest() {
+    return WsjcppEmployees::init({});
 }
 
 // ---------------------------------------------------------------------
 
-bool UnitTestEmployRuntimeGlobalCache::run() {
-    bool bTestSuccess = true;
-
-    bool bResult = WsjcppEmployees::init({});
-    compareB(bTestSuccess, "without-employ1", bResult, true);
-    if (!bResult) {
-        return bTestSuccess;
-    }
+void UnitTestEmployRuntimeGlobalCache::executeTest() {
     WsjcppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WsjcppEmployRuntimeGlobalCache>();
     pCache->set("name1", "value3y2hf9f3h%%");
-    compareB(bTestSuccess, "name1", pCache->has("name1"), true);
+    compare("name1", pCache->has("name1"), true);
     if (pCache->has("name1")) {
-        compareS(bTestSuccess, "name1-value", pCache->get("name1"), "value3y2hf9f3h%%");
+        compare("name1-value", pCache->get("name1"), "value3y2hf9f3h%%");
     }
-    compareB(bTestSuccess, "name2", pCache->has("name2"), false);
-    WsjcppEmployees::deinit();
-    return bTestSuccess;
+    compare("name2", pCache->has("name2"), false);
 }
 
+// ---------------------------------------------------------------------
+
+bool UnitTestEmployRuntimeGlobalCache::doAfterTest() {
+    WsjcppEmployees::deinit();
+    return true;
+}

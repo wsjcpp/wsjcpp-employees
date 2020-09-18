@@ -63,20 +63,21 @@ UnitTestEmploy1::UnitTestEmploy1()
 
 // ---------------------------------------------------------------------
 
-void UnitTestEmploy1::init() {
+bool UnitTestEmploy1::doBeforeTest() {
     // nothing
+    return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool UnitTestEmploy1::run() {
+void UnitTestEmploy1::executeTest() {
     bool bTestSuccess = true;
 
     WsjcppLog::warn(TAG, "init alone employees");
     bool bResult = WsjcppEmployees::init({});
-    compareB(bTestSuccess, "without-employ1", bResult, true);
+    compare("without-employ1", bResult, true);
     if (!bResult) {
-        return bTestSuccess;
+        return;
     }
     WsjcppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WsjcppEmployRuntimeGlobalCache>();
     WsjcppEmployees::deinit();
@@ -84,17 +85,22 @@ bool UnitTestEmploy1::run() {
     // start new 
 
     bResult = WsjcppEmployees::init({"unit-test-employ1"});
-    compareB(bTestSuccess, "unit-test-employ1", bResult, true);
+    compare("unit-test-employ1", bResult, true);
     if (!bResult) {
-        return bTestSuccess;
+        return;
     }
 
     Employ1 *pEmploy1 = findWsjcppEmploy<Employ1>();
 
     pEmploy1->set("test4562132");
-    compareS(bTestSuccess, "value", pEmploy1->get(), "test4562132");
+    compare("value", pEmploy1->get(), "test4562132");
 
     WsjcppEmployees::deinit();
-    return bTestSuccess;
 }
 
+// ---------------------------------------------------------------------
+
+bool UnitTestEmploy1::doAfterTest() {
+    // nothing
+    return true;
+}

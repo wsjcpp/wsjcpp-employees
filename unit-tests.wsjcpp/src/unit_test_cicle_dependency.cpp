@@ -106,13 +106,14 @@ UnitTestCicleDependency::UnitTestCicleDependency()
 
 // ---------------------------------------------------------------------
 
-void UnitTestCicleDependency::init() {
+bool UnitTestCicleDependency::doBeforeTest() {
     // nothing
+    return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool UnitTestCicleDependency::run() {
+void UnitTestCicleDependency::executeTest() {
     bool bTestSuccess = false;
 
     try {
@@ -124,12 +125,12 @@ bool UnitTestCicleDependency::run() {
             bTestSuccess = true;
         }
     }
-
-    if (!bTestSuccess) {
-        WsjcppLog::err(TAG, "Expected specific exception");
-    }
-
-    // compareB(bTestSuccess, "Not implemented", true, false);
-    return bTestSuccess;
+    compare("Expected specific exception", bTestSuccess, true);
 }
 
+// ---------------------------------------------------------------------
+
+bool UnitTestCicleDependency::doAfterTest() {
+    // nothing
+    return true;
+}

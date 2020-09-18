@@ -3,12 +3,12 @@
 
 #include <wsjcpp_unit_tests.h>
 
-// Description: TODO
 class UnitTestEmployRuntimeGlobalCache : public WsjcppUnitTestBase {
     public:
         UnitTestEmployRuntimeGlobalCache();
-        virtual void init();
-        virtual bool run();
+        virtual bool doBeforeTest() override;
+        virtual void executeTest() override;
+        virtual bool doAfterTest() override;
 };
 
 #endif // UNIT_TEST_EMPLOY_RUNTIME_GLOBAL_CACHE_H
