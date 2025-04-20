@@ -1,5 +1,5 @@
 name: "wsjcpp-employees"
-version: "v0.1.3"
+version: v0.2.0
 cmake_minimum_required: "3.0"
 cmake_cxx_standard: "11"
 description: "c++ classes for service-architecture"
@@ -41,3 +41,4 @@ unit-tests:
       description: "WsjcppEmployRuntimeGlobalCache"
     - name: "CicleDependency"
       description: "Test on cicle dependency"
+
