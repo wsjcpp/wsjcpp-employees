@@ -11,3 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Updated wsjcpp-core to v0.2.3 (Up C++ from 11 to 17)
 - Change single name registartion to multiple names
+
+### Added
+
+- Added new defines with version WSJCPP_EMPLOYEES_VERSION_* for using in target project differences
