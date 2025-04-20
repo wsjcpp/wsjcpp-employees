@@ -22,8 +22,8 @@ distribution:
   - source-file: "src/wsjcpp_employees.cpp"
     target-file: "wsjcpp_employees.cpp"
     type: "source-code"
-  - source-file: "scripts.wsjcpp/generate.WsjcppEmploy"
-    target-file: "generate.WsjcppEmploy"
+  - source-file: "scripts.wsjcpp/generate.WsjcppEmploy.wsjcpp-script"
+    target-file: "generate.WsjcppEmploy.wsjcpp-script"
     type: "safe-scripting-generate"
 
 unit-tests:

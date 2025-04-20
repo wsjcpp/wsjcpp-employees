@@ -8,7 +8,8 @@ make_dir "src"
 var employ_name
 set_value employ_name arg1
 normalize_class_name employ_name
-convert_CamelCase_to_snake_case employ_name employ_name
+var employ_name_snake
+convert_CamelCase_to_snake_case employ_name employ_name_snake
 
 var class_name
 concat class_name "Employ" arg1
@@ -18,11 +19,40 @@ var base_filename
 convert_CamelCase_to_snake_case class_name base_filename
 # log_info base_filename
 
-var filename_cpp
-concat filename_cpp "./src/" base_filename ".cpp"
+var interface_filename_h
+concat interface_filename_h "./src/" employ_name_snake ".h"
 
 var filename_h
 concat filename_h "./src/" base_filename ".h"
+
+var filename_cpp
+concat filename_cpp "./src/" base_filename ".cpp"
+
+#
+# INTERFACE FILE
+#
+
+var ifndef_inreface
+concat ifndef_inreface employ_name_snake "_H"
+to_upper_case ifndef_inreface
+
+var content_interface
+concat content_interface "#ifndef " ifndef_inreface "
+#define " ifndef_inreface "
+
+#include <string>
+
+class I" employ_name " {
+    public:
+        static std::string name() { return \"I" employ_name "\"; }
+        virtual void doSomething() = 0;
+};
+
+#endif // " ifndef_inreface
+
+#
+# HEADER FILE
+#
 
 var ifndef_header
 set_value ifndef_header base_filename
@@ -35,13 +65,16 @@ concat content_header "#ifndef " ifndef_header "
 #define " ifndef_header "
 
 #include <wsjcpp_employees.h>
+#include \"" employ_name_snake ".h\"
 
-class " class_name " : public WsjcppEmployBase {
+class " class_name " : public WsjcppEmployBase, public I" employ_name " {
     public:
         " class_name "();
-        static std::string name() { return \"" class_name "\"; }
         virtual bool init() override;
         virtual bool deinit() override;
+
+        // I" employ_name "
+        virtual void doSomething() override;
 
     private:
         std::string TAG;
@@ -49,7 +82,11 @@ class " class_name " : public WsjcppEmployBase {
 
 #endif // " ifndef_header
 
- 
+
+#
+# SOURCE FILE
+#
+
 var content_source
 concat content_source  "
 #include \"" base_filename ".h\"
@@ -60,42 +97,44 @@ concat content_source  "
 
 REGISTRY_WJSCPP_SERVICE_LOCATOR(" class_name ")
 
-" class_name "::" class_name "() 
-: WsjcppEmployBase(" class_name "::name(), {}) {
-    TAG = " class_name "::name();
+" class_name "::" class_name "()
+: WsjcppEmployBase({I" employ_name "::name()}, {}) {
+    TAG = \"" class_name "\";
 }
-
-// ---------------------------------------------------------------------
 
 bool " class_name "::init() {
     WsjcppLog::info(TAG, \"init\");
     return true;
 }
 
-// ---------------------------------------------------------------------
-
 bool " class_name "::deinit() {
     WsjcppLog::info(TAG, \"deinit\");
     return true;
 }
 
+void " class_name "::doSomething() {
+    WsjcppLog::info(TAG, \"doSomething\");
+}
 "
 
-var file_source
-concat file_source "src/" filename_cpp
+#
+# Write content to files
+#
 
+write_file interface_filename_h content_interface
 write_file filename_h content_header
 write_file filename_cpp content_source
 
 log_info "
 ======
 Generated class:
+    - I" class_name "
     - " class_name "
 Generated files:
+    - " interface_filename_h "
     - " filename_h "
     - " filename_cpp "
 ======
 "
 
-cmakelists_txt_append_wsjcpp filename_h
 cmakelists_txt_append_wsjcpp filename_cpp

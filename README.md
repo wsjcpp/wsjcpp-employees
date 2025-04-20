@@ -36,7 +36,7 @@ int main(int argc, const char* argv[]) {
     }
     WsjcppLog::setPrefixLogFile("wsjcpp-employees");
     WsjcppLog::setLogDirectory(".logs");
-    
+
     // init employees
     if (!WsjcppEmployees::init({})) {
         WsjcppLog::err(TAG, "Could not init employees");
@@ -65,63 +65,84 @@ void someFunc() {
 
 ### Example of define you employ use a wsjcpp
 
-```
-wsjcpp generate WsjcppEmploy MyImpl
+```sh
+$ wsjcpp gen WsjcppEmploy MyImpl
 ```
 
-### Example of define you employ (simple)
+And will be generated several files:
+Example Header with interface `src/my_impl.h`:
+```cpp
+#ifndef MY_IMPL_H
+#define MY_IMPL_H
 
-(don't foget add to build)
+#include <string>
 
-Example Header `your_employ.h`:
+class IMyImpl {
+    public:
+        static std::string name() { return "IMyImpl"; }
+        virtual void doSomething() = 0;
+};
+
+#endif // MY_IMPL_H
 ```
-#ifndef YOUR_EMPLOY_H
-#define YOUR_EMPLOY_H
+
+Example Header `src/employ_my_impl.h`:
+```cpp
+#ifndef EMPLOY_MY_IMPL_H
+#define EMPLOY_MY_IMPL_H
 
 #include <wsjcpp_employees.h>
+#include "my_impl.h"
 
-class YourEmploy : public WsjcppEmployBase {
+class EmployMyImpl : public WsjcppEmployBase, public IMyImpl {
     public:
-        YourEmploy();
-        static std::string name() { return "YourEmploy"; }
+        EmployMyImpl();
         virtual bool init() override;
         virtual bool deinit() override;
-        void doSomething();
+
+        // IMyImpl
+        virtual void doSomething() override;
+
     private:
         std::string TAG;
 };
 
-#endif // YOUR_EMPLOY_H
+#endif // EMPLOY_MY_IMPL_H
 ```
 
-Example source-code `your_employ.cpp`:
-```
-#include "your_employ.h"
+Example source-code `src/employ_my_impl.cpp`:
+```cpp
+#include "employ_my_impl.h"
+#include <wsjcpp_core.h>
 
-REGISTRY_WJSCPP_EMPLOY(YourEmploy)
+// ---------------------------------------------------------------------
+// EmployMyImpl
 
-YourEmploy::YourEmploy()
-    : WsjcppEmployBase(YourEmploy::name(), {}) {
-    TAG = YourEmploy::name();
+REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployMyImpl)
+
+EmployMyImpl::EmployMyImpl()
+: WsjcppEmployBase({IMyImpl::name()}, {}) {
+    TAG = "EmployMyImpl";
 }
 
-bool YourEmploy::init() {
-    WsjcppLog::info(TAG, "init called");
-    return true; 
-}
-
-bool YourEmploy::deinit() {
-    WsjcppLog::info(TAG, "deinit called");
+bool EmployMyImpl::init() {
+    WsjcppLog::info(TAG, "init");
     return true;
 }
 
-void YourEmploy::doSomething() {
-    WsjcppLog::info(TAG, "doSomething called");
+bool EmployMyImpl::deinit() {
+    WsjcppLog::info(TAG, "deinit");
+    return true;
+}
+
+void EmployMyImpl::doSomething() {
+    WsjcppLog::info(TAG, "doSomething");
 }
 ```
 
-1. For call ::init you must call `WsjcppEmployees::init({})` in main function
-2. find employ and call you method from any place
+1. If you created manually: don't foget add to build
+2. For call ::init you must call `WsjcppEmployees::init({})` in main function
+3. find employ and call you method from any place
 
 ```
 #inluce <your_employ.h>
@@ -144,7 +165,7 @@ void main() {
 
 ```
 
-// second - will be init after 
+// second - will be init after
 SecondEmploy::SecondEmploy()
     : WsjcppEmployBase(SecondEmploy::name(), {"FirstEmploy"}) {
     TAG = SecondEmploy::name();
@@ -173,14 +194,11 @@ UsersEmploy
 * In DatabaseEmploy::init you can check connection to database and do migration database struct
 * In UsersEmploy::init you can use DatabaseEmploy for load user's tokens on server start
 
-2. You wanna init fork some employs 
+2. You wanna init fork some employs
 
 Also you can define on init:
 ```
 WsjcppEmployees::init({"server-start"})
 ```
 So it will be call "::init" employees only there which has this requirements.
-
-
-
 

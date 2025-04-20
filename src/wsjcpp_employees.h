@@ -13,7 +13,7 @@
 class WsjcppEmployBase {
 public:
     WsjcppEmployBase(
-        const std::string &sName,
+        const std::vector<std::string> &vNames,
         const std::vector<std::string> &vLoadAfter
     );
     virtual ~WsjcppEmployBase();
@@ -23,10 +23,8 @@ public:
 
 private:
     std::string TAG;
-    std::string m_sName;
+    std::vector<std::string> m_vNames;
     std::vector<std::string> m_vLoadAfter;
-    
-    
 };
 
 // ---------------------------------------------------------------------
@@ -39,10 +37,10 @@ class WsjcppEmployees {
     public:
         static void initGlobalVariables();
         static void deinitGlobalVariables();
-        static void addService(const std::string &sName, WsjcppEmployBase* pEmploy);
+        static void addEmploy(const std::string &sName, WsjcppEmployBase* pEmploy);
         static bool init(const std::vector<std::string> &vLoadAfter);
         static bool deinit();
-        static void recoursiveTestDependencies(std::vector<std::string> v);
+        static void recoursiveTestDependencies(const std::vector<std::string> &v);
 };
 
 // ---------------------------------------------------------------------
