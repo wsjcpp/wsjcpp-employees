@@ -72,6 +72,7 @@ class WsjcppCore {
 
         static std::string doNormalizePath(const std::string &sPath);
         static std::string extractFilename(const std::string &sPath);
+        static std::string extractDirpath(const std::string &sFullPath);
         static std::string getCurrentDirectory();
 
         static long getCurrentTimeInMilliseconds();
@@ -90,6 +91,7 @@ class WsjcppCore {
         static std::vector<std::string> listOfFiles(const std::string &sDirname);
         static std::vector<std::string> getListOfFiles(const std::string &sDirname);
         static bool makeDir(const std::string &sDirname);
+        static bool makeDirsPath(const std::string &sDirname);
         static bool writeFile(const std::string &sFilename, const std::string &sContent);
         static bool readTextFile(const std::string &sFilename, std::string &sOutputContent);
         static bool readFileToBuffer(const std::string &sFilename, char *pBuffer[], int &nBufferSize);
@@ -127,8 +129,11 @@ class WsjcppCore {
         static bool setFilePermissions(const std::string& sFilePath, const WsjcppFilePermissions &filePermissions, std::string& sError);
         static bool getFilePermissions(const std::string& sFilePath, WsjcppFilePermissions &filePermissions, std::string& sError);
 
-        static std::string doPadLeft(const std::string& sIn, char cWhat, int nLength);
-        static std::string doPadRight(const std::string& sIn, char cWhat, int nLength);
+        static std::string doPadLeft(const std::string& sIn, char cWhat, size_t nLength);
+        static std::string doPadRight(const std::string& sIn, char cWhat, size_t nLength);
+
+        static bool startsWith(const std::string& sLine, const std::string& sStart);
+        static bool endsWith(const std::string& sLine, const std::string& sEnd);
 
 };
 
@@ -193,6 +198,42 @@ class WsjcppLog {
     private:
         static void add(WsjcppColorModifier &clr, const std::string &sType, const std::string &sTag, const std::string &sMessage);
 };
+
+// ---------------------------------------------------------------------
+// WsjcppResourceFile
+
+class WsjcppResourceFile {
+    public:
+        WsjcppResourceFile();
+        virtual const std::string &getFilename() const = 0;
+        virtual const std::string &getPackAs() const = 0;
+        virtual int getBufferSize() const = 0;
+        virtual const char *getBuffer() const = 0;
+};
+
+
+// ---------------------------------------------------------------------
+// WsjcppResourcesManager
+
+extern std::vector<WsjcppResourceFile*> *g_pWsjcppResourceFiles;
+
+class WsjcppResourcesManager {
+    public:
+        static void initGlobalVariables();
+        static void add(WsjcppResourceFile*);
+        static const std::vector<WsjcppResourceFile*> &list();
+        static bool has(const std::string &sFilename);
+        static WsjcppResourceFile* get(const std::string &sFilename);
+        static bool make(const std::string &sWorkspace);
+        // static bool createFolders(const std::string &sWorkspace);
+        // static bool extractFiles(const std::string &sWorkspace);
+};
+
+// ---------------------------------------------------------------------
+// Registry WsjcppResourceFile
+#define REGISTRY_WSJCPP_RESOURCE_FILE( classname ) \
+    static classname * pRegistryWsjcppResourceFile ## classname = new classname(); \
+
 
 #endif // WSJCPP_CORE_H
 
