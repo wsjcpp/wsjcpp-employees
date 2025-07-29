@@ -21,8 +21,8 @@ public:
         const std::vector<std::string> &vLoadAfter
     );
     virtual ~WsjcppEmployBase();
-    virtual bool init() = 0;
-    virtual bool deinit() = 0;
+    virtual bool init(const std::string &sName, bool bSilent) = 0;
+    virtual bool deinit(const std::string &sName, bool bSilent) = 0;
     const std::vector<std::string> &loadAfter();
 
 private:
@@ -42,9 +42,30 @@ class WsjcppEmployees {
         static void initGlobalVariables();
         static void deinitGlobalVariables();
         static void addEmploy(const std::string &sName, WsjcppEmployBase* pEmploy);
-        static bool init(const std::vector<std::string> &vLoadAfter);
-        static bool deinit();
+        static bool init(const std::vector<std::string> &vLoadAfter, bool bSilent = false);
+        static bool deinit(bool bSilent = false);
         static void recoursiveTestDependencies(const std::vector<std::string> &v);
+};
+
+// ---------------------------------------------------------------------
+// WsjcppEmployeesInit
+
+struct WsjcppEmployeesInit {
+  const bool inited;
+  bool deinited;
+  bool silent;
+  WsjcppEmployeesInit(const std::vector<std::string> &vLoadAfter, bool bSilent = false) :
+    silent(bSilent), deinited(false), inited(WsjcppEmployees::init(vLoadAfter, bSilent)) {
+  }
+  ~WsjcppEmployeesInit() {
+    this->deinit();
+  }
+  bool deinit() {
+    if (inited && !deinited) {
+        deinited = WsjcppEmployees::deinit(silent);
+    }
+    return deinited;
+  }
 };
 
 // ---------------------------------------------------------------------
@@ -80,8 +101,8 @@ class WsjcppEmployRuntimeGlobalCache : public WsjcppEmployBase {
     public:
         WsjcppEmployRuntimeGlobalCache();
         static std::string name() { return "WsjcppEmployRuntimeGlobalCache"; }
-        virtual bool init() override;
-        virtual bool deinit() override;
+        virtual bool init(const std::string &sName, bool bSilent) override;
+        virtual bool deinit(const std::string &sName, bool bSilent) override;
         void set(const std::string &sName, const std::string &sValue);
         bool has(const std::string &sName);
         std::string get(const std::string &sName);

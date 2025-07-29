@@ -12,13 +12,17 @@ EmployMyImpl::EmployMyImpl()
     TAG = "EmployMyImpl";
 }
 
-bool EmployMyImpl::init() {
-    WsjcppLog::info(TAG, "init");
+bool EmployMyImpl::init(const std::string &sName, bool bSilent) {
+    if (!bSilent) {
+        WsjcppLog::info(TAG, "init " + sName);
+    }
     return true;
 }
 
-bool EmployMyImpl::deinit() {
-    WsjcppLog::info(TAG, "deinit");
+bool EmployMyImpl::deinit(const std::string &sName, bool bSilent) {
+    if (!bSilent) {
+        WsjcppLog::info(TAG, "deinit " + sName);
+    }
     return true;
 }
 

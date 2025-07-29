@@ -12,7 +12,8 @@ int main(int argc, const char* argv[]) {
     WsjcppLog::setPrefixLogFile("wsjcpp-employees");
     WsjcppLog::setLogDirectory(".logs");
 
-    if (!WsjcppEmployees::init({})) {
+    WsjcppEmployeesInit empls({});
+    if (!empls.inited) {
         WsjcppLog::err(TAG, "Could not init employees");
         return -1;
     }

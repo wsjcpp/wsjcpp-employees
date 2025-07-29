@@ -38,7 +38,9 @@ int main(int argc, const char* argv[]) {
     WsjcppLog::setLogDirectory(".logs");
 
     // init employees
-    if (!WsjcppEmployees::init({})) {
+    bool bSilent = false;
+    WsjcppEmployeesInit empls({}, bSilent);
+    if (!empls.inited) {
         WsjcppLog::err(TAG, "Could not init employees");
         return -1;
     }
@@ -97,8 +99,8 @@ Example Header `src/employ_my_impl.h`:
 class EmployMyImpl : public WsjcppEmployBase, public IMyImpl {
     public:
         EmployMyImpl();
-        virtual bool init() override;
-        virtual bool deinit() override;
+        virtual bool init(const std::string &sName, bool bSilent) override;
+        virtual bool deinit(const std::string &sName, bool bSilent) override;
 
         // IMyImpl
         virtual void doSomething() override;
@@ -125,13 +127,17 @@ EmployMyImpl::EmployMyImpl()
     TAG = "EmployMyImpl";
 }
 
-bool EmployMyImpl::init() {
-    WsjcppLog::info(TAG, "init");
+bool EmployMyImpl::init(const std::string &sName, bool bSilent) {
+    if (!bSilent) {
+        WsjcppLog::info(TAG, "init " + sName);
+    }
     return true;
 }
 
-bool EmployMyImpl::deinit() {
-    WsjcppLog::info(TAG, "deinit");
+bool EmployMyImpl::deinit(const std::string &sName, bool bSilent) {
+    if (!bSilent) {
+        WsjcppLog::info(TAG, "deinit " + sName);
+    }
     return true;
 }
 
@@ -141,10 +147,10 @@ void EmployMyImpl::doSomething() {
 ```
 
 1. If you created manually: don't foget add to build
-2. For call ::init you must call `WsjcppEmployees::init({})` in main function
+2. For call ::init you must call `WsjcppEmployees::init({})` in main function or use a helper class `WsjcppEmployeesInit`
 3. find employ and call you method from any place
 
-```
+```cpp
 #inluce <your_employ.h>
 
 void someFunc() {
@@ -154,7 +160,7 @@ void someFunc() {
 
 void main() {
     ...
-    WsjcppEmployees::init({});
+    WsjcppEmployeesInit empls({});
     someFunc();
 }
 ```
@@ -163,7 +169,7 @@ void main() {
 
 1. Second employ required init after first
 
-```
+```cpp
 
 // second - will be init after
 SecondEmploy::SecondEmploy()
@@ -171,7 +177,7 @@ SecondEmploy::SecondEmploy()
     TAG = SecondEmploy::name();
 }
 
-bool SecondEmploy::init() {
+bool SecondEmploy::init(const std::string &sName, bool bSilent) {
     // will be called second
 }
 
@@ -181,7 +187,7 @@ FirstEmploy::FirstEmploy()
     TAG = FirstEmploy::name();
 }
 
-bool SecondEmploy::init() {
+bool SecondEmploy::init(const std::string &sName, bool bSilent) {
     // will be called first
 }
 ```
@@ -197,8 +203,12 @@ UsersEmploy
 2. You wanna init fork some employs
 
 Also you can define on init:
+```cpp
+WsjcppEmployees::init({"server-start"});
 ```
-WsjcppEmployees::init({"server-start"})
+or same with `WsjcppEmployeesInit`
+```cpp
+WsjcppEmployeesInit empls({"server-start"});
 ```
 So it will be call "::init" employees only there which has this requirements.
 

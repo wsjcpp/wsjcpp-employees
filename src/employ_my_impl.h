@@ -7,8 +7,8 @@
 class EmployMyImpl : public WsjcppEmployBase, public IMyImpl, public IMyImpl2 {
     public:
         EmployMyImpl();
-        virtual bool init() override;
-        virtual bool deinit() override;
+        virtual bool init(const std::string &sName, bool bSilent) override;
+        virtual bool deinit(const std::string &sName, bool bSilent) override;
 
         // IMyImpl
         virtual void doSomething() override;
