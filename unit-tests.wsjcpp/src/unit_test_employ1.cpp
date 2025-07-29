@@ -23,7 +23,7 @@ class Employ1 : public WsjcppEmployBase {
 REGISTRY_WJSCPP_SERVICE_LOCATOR(Employ1)
 
 Employ1::Employ1() 
-    : WsjcppEmployBase(Employ1::name(), {"unit-test-employ1"}) {
+    : WsjcppEmployBase({Employ1::name()}, {"unit-test-employ1"}) {
     TAG = Employ1::name();
 }
 

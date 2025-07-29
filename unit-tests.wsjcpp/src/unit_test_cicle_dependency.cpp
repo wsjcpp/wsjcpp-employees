@@ -24,7 +24,7 @@ class EmployCicle2 : public WsjcppEmployBase {
         static std::string name() { return "EmployCicle2"; };
         virtual bool init() override;
         virtual bool deinit() override;
-       
+
     private:
         std::string TAG;
         std::string m_sValue;
@@ -32,12 +32,20 @@ class EmployCicle2 : public WsjcppEmployBase {
 
 // ---------------------------------------------------------------------
 
-class EmployCicle3 : public WsjcppEmployBase {
+class IEmployCicle3 {
+    public:
+        static std::string name() { return "IEmployCicle3"; };
+        virtual void cicle3() = 0;
+};
+
+class EmployCicle3 : public WsjcppEmployBase, public IEmployCicle3 {
     public:
         EmployCicle3();
-        static std::string name() { return "EmployCicle3"; };
         virtual bool init() override;
         virtual bool deinit() override;
+
+        // IEmployCicle3
+        virtual void cicle3() override {};
     private:
         std::string TAG;
         std::string m_sValue;
@@ -45,7 +53,7 @@ class EmployCicle3 : public WsjcppEmployBase {
 
 // ---------------------------------------------------------------------
 
-EmployCicle1::EmployCicle1() : WsjcppEmployBase(EmployCicle1::name(), {"unit-test-employ1", EmployCicle3::name()}) {
+EmployCicle1::EmployCicle1() : WsjcppEmployBase({EmployCicle1::name()}, {"unit-test-employ1", EmployCicle3::name()}) {
     TAG = EmployCicle1::name();
 }
 
@@ -63,7 +71,7 @@ REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle1)
 
 // ---------------------------------------------------------------------
 
-EmployCicle2::EmployCicle2() : WsjcppEmployBase(EmployCicle2::name(), {"unit-test-employ1", EmployCicle1::name() }) {
+EmployCicle2::EmployCicle2() : WsjcppEmployBase({EmployCicle2::name()}, {"unit-test-employ1", EmployCicle1::name() }) {
     TAG = EmployCicle2::name();
 }
 
@@ -81,8 +89,8 @@ REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle2)
 
 // ---------------------------------------------------------------------
 
-EmployCicle3::EmployCicle3() : WsjcppEmployBase(EmployCicle3::name(), {"unit-test-employ1", EmployCicle2::name() }) {
-    TAG = EmployCicle3::name();
+EmployCicle3::EmployCicle3() : WsjcppEmployBase({IEmployCicle3::name()}, {"unit-test-employ1", EmployCicle2::name() }) {
+    TAG = IEmployCicle3::name();
 }
 
 bool EmployCicle3::init() {
@@ -117,11 +125,12 @@ void UnitTestCicleDependency::executeTest() {
     bool bTestSuccess = false;
 
     try {
-        WsjcppEmployBase* pEmploy = new EmployCicle3();
-        WsjcppEmployees::addService(EmployCicle3::name(), pEmploy);
+        REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle3)
+        // WsjcppEmployBase* pEmploy = new ();
+        // WsjcppEmployees::addEmploy(EmployCicle3::name(), pEmploy);
     } catch(const std::exception &e) {
         std::string sErrorMsg(e.what());
-        if (sErrorMsg == "Cicle dependency: EmployCicle3 -> EmployCicle2 -> EmployCicle1 -> EmployCicle3") {
+        if (sErrorMsg == "Cicle dependency: IEmployCicle3 -> EmployCicle2 -> EmployCicle1 -> IEmployCicle3") {
             bTestSuccess = true;
         }
     }
