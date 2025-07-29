@@ -1,5 +1,4 @@
-#ifndef EMPLOY_MY_IMPL_H
-#define EMPLOY_MY_IMPL_H
+#pragma once
 
 #include "my_impl.h"
 #include <wsjcpp_employees.h>
@@ -19,5 +18,3 @@ public:
 private:
   std::string TAG;
 };
-
-#endif // EMPLOY_MY_IMPL_H

@@ -32,13 +32,8 @@ concat filename_cpp "./src/" base_filename ".cpp"
 # INTERFACE FILE
 #
 
-var ifndef_inreface
-concat ifndef_inreface employ_name_snake "_H"
-to_upper_case ifndef_inreface
-
 var content_interface
-concat content_interface "#ifndef " ifndef_inreface "
-#define " ifndef_inreface "
+concat content_interface "#pragma once
 
 #include <string>
 
@@ -47,22 +42,14 @@ class I" employ_name " {
         static std::string name() { return \"I" employ_name "\"; }
         virtual void doSomething() = 0;
 };
-
-#endif // " ifndef_inreface
+"
 
 #
 # HEADER FILE
 #
 
-var ifndef_header
-set_value ifndef_header base_filename
-concat ifndef_header "_H"
-
-to_upper_case ifndef_header
-
 var content_header
-concat content_header "#ifndef " ifndef_header "
-#define " ifndef_header "
+concat content_header "#pragma once
 
 #include <wsjcpp_employees.h>
 #include \"" employ_name_snake ".h\"
@@ -70,8 +57,8 @@ concat content_header "#ifndef " ifndef_header "
 class " class_name " : public WsjcppEmployBase, public I" employ_name " {
     public:
         " class_name "();
-        virtual bool init() override;
-        virtual bool deinit() override;
+        virtual bool init(const std::string &sName, bool bSilent) override;
+        virtual bool deinit(const std::string &sName, bool bSilent) override;
 
         // I" employ_name "
         virtual void doSomething() override;
@@ -79,9 +66,7 @@ class " class_name " : public WsjcppEmployBase, public I" employ_name " {
     private:
         std::string TAG;
 };
-
-#endif // " ifndef_header
-
+"
 
 #
 # SOURCE FILE
@@ -102,13 +87,17 @@ REGISTRY_WJSCPP_SERVICE_LOCATOR(" class_name ")
     TAG = \"" class_name "\";
 }
 
-bool " class_name "::init() {
-    WsjcppLog::info(TAG, \"init\");
+bool " class_name "::init(const std::string &sName, bool bSilent) {
+    if (!bSilent) {
+        WsjcppLog::info(TAG, \"init \" + sName);
+    }
     return true;
 }
 
-bool " class_name "::deinit() {
-    WsjcppLog::info(TAG, \"deinit\");
+bool " class_name "::deinit(const std::string &sName, bool bSilent) {
+    if (!bSilent) {
+        WsjcppLog::info(TAG, \"deinit \" + sName);
+    }
     return true;
 }
 

@@ -1,15 +1,34 @@
+/**********************************************************************************
+ * Copyright (c) 2020-2025 Evgenii Sopov <mrseakg@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ ***********************************************************************************/
+
 #include "wsjcpp_employees.h"
 #include <algorithm>
 #include <iostream>
 #include <wsjcpp_core.h>
 
-// ---------------------------------------------------------------------
-
 std::map<std::string, WsjcppEmployBase *> *g_pWsjcppEmployees = nullptr;
 std::vector<std::string> *g_pWsjcppInitEmployees = nullptr;
 std::vector<std::string> *g_pWsjcppInitWith = nullptr;
-
-// ---------------------------------------------------------------------
 
 void WsjcppEmployees::initGlobalVariables() {
   if (g_pWsjcppEmployees == nullptr) {
@@ -25,8 +44,6 @@ void WsjcppEmployees::initGlobalVariables() {
     g_pWsjcppInitWith = new std::vector<std::string>();
   }
 }
-
-// ---------------------------------------------------------------------
 
 void WsjcppEmployees::deinitGlobalVariables() {
   const std::string TAG = "WsjcppEmployees::deinit";
@@ -56,8 +73,6 @@ void WsjcppEmployees::deinitGlobalVariables() {
   }
 }
 
-// ---------------------------------------------------------------------
-
 void WsjcppEmployees::addEmploy(const std::string &sName, WsjcppEmployBase *pEmploy) {
   WsjcppEmployees::initGlobalVariables();
   if (g_pWsjcppEmployees->find(sName) != g_pWsjcppEmployees->end()) {
@@ -67,8 +82,6 @@ void WsjcppEmployees::addEmploy(const std::string &sName, WsjcppEmployBase *pEmp
     // WsjcppLog::info(sName, "Registered");
   }
 }
-
-// ---------------------------------------------------------------------
 
 bool WsjcppEmployees::init(const std::vector<std::string> &vStart, bool bSilent) {
   WsjcppEmployees::initGlobalVariables();
@@ -161,8 +174,6 @@ bool WsjcppEmployees::deinit(bool bSilent) {
   return true;
 }
 
-// ---------------------------------------------------------------------
-
 void WsjcppEmployees::recoursiveTestDependencies(const std::vector<std::string> &vNames) {
   std::vector<std::string> v = vNames;
   std::string sEmployName = v[v.size() - 1];
@@ -208,13 +219,9 @@ WsjcppEmployBase::WsjcppEmployBase(const std::vector<std::string> &vNames, const
   WsjcppEmployees::recoursiveTestDependencies(m_vNames);
 }
 
-// ---------------------------------------------------------------------
-
 WsjcppEmployBase::~WsjcppEmployBase() {
   // nothing
 }
-
-// ---------------------------------------------------------------------
 
 const std::vector<std::string> &WsjcppEmployBase::loadAfter() { return m_vLoadAfter; }
 
@@ -223,15 +230,11 @@ const std::vector<std::string> &WsjcppEmployBase::loadAfter() { return m_vLoadAf
 
 REGISTRY_WJSCPP_SERVICE_LOCATOR(WsjcppEmployRuntimeGlobalCache)
 
-// ---------------------------------------------------------------------
-
 WsjcppEmployRuntimeGlobalCache::WsjcppEmployRuntimeGlobalCache()
   : WsjcppEmployBase({WsjcppEmployRuntimeGlobalCache::name()}, {}) {
 
   TAG = WsjcppEmployRuntimeGlobalCache::name();
 }
-
-// ---------------------------------------------------------------------
 
 bool WsjcppEmployRuntimeGlobalCache::init(const std::string &sName, bool bSilent) {
   // checking settings
@@ -240,8 +243,6 @@ bool WsjcppEmployRuntimeGlobalCache::init(const std::string &sName, bool bSilent
   }
   return true;
 }
-
-// ---------------------------------------------------------------------
 
 bool WsjcppEmployRuntimeGlobalCache::deinit(const std::string &sName, bool bSilent) {
   // checking settings
@@ -252,19 +253,13 @@ bool WsjcppEmployRuntimeGlobalCache::deinit(const std::string &sName, bool bSile
   return true;
 }
 
-// ---------------------------------------------------------------------
-
 void WsjcppEmployRuntimeGlobalCache::set(const std::string &sName, const std::string &sValue) {
   m_sStringMap[sName] = sValue;
 }
 
-// ---------------------------------------------------------------------
-
 bool WsjcppEmployRuntimeGlobalCache::has(const std::string &sName) {
   return m_sStringMap.find(sName) != m_sStringMap.end();
 }
-
-// ---------------------------------------------------------------------
 
 std::string WsjcppEmployRuntimeGlobalCache::get(const std::string &sName) {
   if (m_sStringMap.find(sName) != m_sStringMap.end()) {
@@ -272,5 +267,3 @@ std::string WsjcppEmployRuntimeGlobalCache::get(const std::string &sName) {
   }
   return "";
 }
-
-// ---------------------------------------------------------------------

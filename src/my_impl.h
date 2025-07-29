@@ -1,5 +1,4 @@
-#ifndef MY_IMPL_H
-#define MY_IMPL_H
+#pragma once
 
 #include <string>
 
@@ -14,5 +13,3 @@ public:
   static std::string name() { return "IMyImpl2"; }
   virtual void doSomething2() = 0;
 };
-
-#endif // MY_IMPL_H
