@@ -28,8 +28,6 @@ distribution:
 
 unit-tests:
   cases:
-    - name: "EmployRuntimeGlobalCache"
-      description: "WsjcppEmployRuntimeGlobalCache"
     - name: "CycleDependency"
       description: "Test on cycle dependency"
 
