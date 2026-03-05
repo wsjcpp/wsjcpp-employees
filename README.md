@@ -13,8 +13,6 @@ $ wsjcpp install https://github.com/wsjcpp/wsjcpp-employees:master
 
 or include this files:
 
-- src.wsjcpp/wsjcpp_core/wsjcpp_core.h
-- src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp
 - src/wsjcpp_employees.h
 - src/wsjcpp_employees.cpp
 
@@ -78,6 +76,8 @@ Example output:
 % ./wsjcpp-employees
 2020-03-22 11:32:31.750, 0x0x110c21dc0 [INFO] WJSCppEmployRuntimeGlobalCache: init
 2020-03-22 11:32:31.750, 0x0x110c21dc0 [OK] Employees_init: Init WJSCppEmployRuntimeGlobalCache ... OK
+2026-03-05 16:49:45.106, 0x00007139fa6fb740 [INFO] WsjcppEmployRuntimeGlobalCache: deinit
+2026-03-05 16:49:45.106, 0x00007139fa6fb740 [OK] WsjcppEmployees::deinit: WsjcppEmployRuntimeGlobalCache ... DEINIT_OK
 ```
 
 Now you can call from any place:
