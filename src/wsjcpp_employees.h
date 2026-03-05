@@ -63,7 +63,7 @@ public:
   static void addEmploy(const std::string &sName, WsjcppEmployBase *pEmploy);
   static bool init(const std::vector<std::string> &vLoadAfter, bool bSilent = false);
   static bool deinit(bool bSilent = false);
-  static void recoursiveTestDependencies(const std::vector<std::string> &v);
+  static void recursiveTestDependencies(const std::vector<std::string> &v);
 };
 
 // ---------------------------------------------------------------------

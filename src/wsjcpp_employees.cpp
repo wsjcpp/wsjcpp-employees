@@ -174,7 +174,7 @@ bool WsjcppEmployees::deinit(bool bSilent) {
   return true;
 }
 
-void WsjcppEmployees::recoursiveTestDependencies(const std::vector<std::string> &vNames) {
+void WsjcppEmployees::recursiveTestDependencies(const std::vector<std::string> &vNames) {
   std::vector<std::string> v = vNames;
   std::string sEmployName = v[v.size() - 1];
   WsjcppEmployBase *pEmploy = nullptr;
@@ -182,7 +182,7 @@ void WsjcppEmployees::recoursiveTestDependencies(const std::vector<std::string> 
   std::map<std::string, WsjcppEmployBase *>::iterator it;
   it = g_pWsjcppEmployees->find(sEmployName);
   if (it == g_pWsjcppEmployees->end()) {
-    // WsjcppLog::throw_err("WsjcppEmployees::recoursiveTestDependencies", "Not found employ '" + sEmployName + "'");
+    // WsjcppLog::throw_err("WsjcppEmployees::recursiveTestDependencies", "Not found employ '" + sEmployName + "'");
     return;
   }
   pEmploy = g_pWsjcppEmployees->at(sEmployName);
@@ -191,14 +191,14 @@ void WsjcppEmployees::recoursiveTestDependencies(const std::vector<std::string> 
     for (int i = 0; i < v.size(); i++) {
       if (v[i] == vLoadAfter[la]) {
         WsjcppLog::throw_err(
-          "WsjcppEmployees::recoursiveTestDependencies",
-          "Cicle dependency: " + WsjcppCore::join(v, " -> ") + " -> " + vLoadAfter[la]
+          "WsjcppEmployees::recursiveTestDependencies",
+          "Cycle dependency: " + WsjcppCore::join(v, " -> ") + " -> " + vLoadAfter[la]
         );
         return;
       }
     }
     v.push_back(vLoadAfter[la]);
-    recoursiveTestDependencies(v);
+    recursiveTestDependencies(v);
     v.pop_back();
   }
 }
@@ -216,7 +216,7 @@ WsjcppEmployBase::WsjcppEmployBase(const std::vector<std::string> &vNames, const
   for (int i = 0; i < m_vNames.size(); i++) {
     WsjcppEmployees::addEmploy(m_vNames[i], this);
   }
-  WsjcppEmployees::recoursiveTestDependencies(m_vNames);
+  WsjcppEmployees::recursiveTestDependencies(m_vNames);
 }
 
 WsjcppEmployBase::~WsjcppEmployBase() {
