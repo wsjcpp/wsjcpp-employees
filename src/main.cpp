@@ -36,7 +36,7 @@ int main(int argc, const char *argv[]) {
   WsjcppLog::setLogDirectory(".logs");
 
   WsjcppEmployeesInit empls({});
-  if (!empls.inited) {
+  if (!empls.initialized) {
     WsjcppLog::err(TAG, "Could not init employees");
     return -1;
   }

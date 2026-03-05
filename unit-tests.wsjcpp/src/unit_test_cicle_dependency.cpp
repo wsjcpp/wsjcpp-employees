@@ -67,7 +67,7 @@ bool EmployCicle1::deinit() {
     return true;
 }
 
-REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle1)
+REGISTRY_WSJCPP_EMPLOY(EmployCicle1)
 
 // ---------------------------------------------------------------------
 
@@ -85,7 +85,7 @@ bool EmployCicle2::deinit() {
     return true;
 }
 
-REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle2)
+REGISTRY_WSJCPP_EMPLOY(EmployCicle2)
 
 // ---------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ bool EmployCicle3::deinit() {
     return true;
 }
 
-// REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle3)
+// REGISTRY_WSJCPP_EMPLOY(EmployCicle3)
 
 // ---------------------------------------------------------------------
 
@@ -125,7 +125,7 @@ void UnitTestCicleDependency::executeTest() {
     bool bTestSuccess = false;
 
     try {
-        REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployCicle3)
+        REGISTRY_WSJCPP_EMPLOY(EmployCicle3)
         // WsjcppEmployBase* pEmploy = new ();
         // WsjcppEmployees::addEmploy(EmployCicle3::name(), pEmploy);
     } catch(const std::exception &e) {

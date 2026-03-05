@@ -39,8 +39,8 @@ int main(int argc, const char* argv[]) {
 
     // init employees
     bool bSilent = false;
-    WsjcppEmployeesInit empls({}, bSilent);
-    if (!empls.inited) {
+    WsjcppEmployeesInit employees({}, bSilent);
+    if (!employees.initialized) {
         WsjcppLog::err(TAG, "Could not init employees");
         return -1;
     }
@@ -120,7 +120,7 @@ Example source-code `src/employ_my_impl.cpp`:
 // ---------------------------------------------------------------------
 // EmployMyImpl
 
-REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployMyImpl)
+REGISTRY_WSJCPP_EMPLOY(EmployMyImpl)
 
 EmployMyImpl::EmployMyImpl()
 : WsjcppEmployBase({IMyImpl::name()}, {}) {

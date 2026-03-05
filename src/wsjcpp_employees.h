@@ -70,17 +70,17 @@ public:
 // WsjcppEmployeesInit
 
 struct WsjcppEmployeesInit {
-  const bool inited;
-  bool deinited;
+  const bool initialized;
+  bool uninitialized;
   bool silent;
-  WsjcppEmployeesInit(const std::vector<std::string> &vLoadAfter, bool bSilent = false)
-    : silent(bSilent), deinited(false), inited(WsjcppEmployees::init(vLoadAfter, bSilent)) {}
+  WsjcppEmployeesInit(const std::vector<std::string> &vLoadAfter, bool _silent = false)
+    : silent(_silent), uninitialized(false), initialized(WsjcppEmployees::init(vLoadAfter, _silent)) {}
   ~WsjcppEmployeesInit() { this->deinit(); }
   bool deinit() {
-    if (inited && !deinited) {
-      deinited = WsjcppEmployees::deinit(silent);
+    if (initialized && !uninitialized) {
+      uninitialized = WsjcppEmployees::deinit(silent);
     }
-    return deinited;
+    return uninitialized;
   }
 };
 

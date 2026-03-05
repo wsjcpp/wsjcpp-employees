@@ -137,8 +137,8 @@ bool WsjcppEmployees::deinit(bool bSilent) {
     return false;
   }
 
-  int nInitedCount = g_pWsjcppInitEmployees->size();
-  for (int i = nInitedCount - 1; i >= 0; i--) {
+  int initializedCount = g_pWsjcppInitEmployees->size();
+  for (int i = initializedCount - 1; i >= 0; i--) {
     std::string sEmployName = g_pWsjcppInitEmployees->at(i);
     if (std::find(g_pWsjcppInitWith->begin(), g_pWsjcppInitWith->end(), sEmployName) != g_pWsjcppInitWith->end()) {
       if (!bSilent) {
@@ -228,7 +228,7 @@ const std::vector<std::string> &WsjcppEmployBase::loadAfter() { return m_vLoadAf
 // ---------------------------------------------------------------------
 // WsjcppEmployRuntimeGlobalCache
 
-REGISTRY_WJSCPP_SERVICE_LOCATOR(WsjcppEmployRuntimeGlobalCache)
+REGISTRY_WSJCPP_EMPLOY(WsjcppEmployRuntimeGlobalCache)
 
 WsjcppEmployRuntimeGlobalCache::WsjcppEmployRuntimeGlobalCache()
   : WsjcppEmployBase({WsjcppEmployRuntimeGlobalCache::name()}, {}) {

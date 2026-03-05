@@ -20,7 +20,7 @@ class Employ1 : public WsjcppEmployBase {
         std::string m_sValue;
 };
 
-REGISTRY_WJSCPP_SERVICE_LOCATOR(Employ1)
+REGISTRY_WSJCPP_EMPLOY(Employ1)
 
 Employ1::Employ1() 
     : WsjcppEmployBase({Employ1::name()}, {"unit-test-employ1"}) {
