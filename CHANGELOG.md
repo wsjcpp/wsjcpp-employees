@@ -5,10 +5,23 @@ All notable changes to wsjcpp-yaml project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [v0.2.0] - 2025-06-29 (2025 Jule 29)
+## [v0.2.1] - 2026-03-05 (2026 March 5)
+
+- Fixed: renamed 'recoursiveTestDependencies' to 'recursiveTestDependencies'
+- Fixed-names: renamed 'inited' to 'initialized'
+- Added define REGISTRY_WSJCPP_EMPLOY
+- Fixed namings: renamed REGISTRY_WJSCPP_SERVICE_LOCATOR to REGISTRY_WSJCPP_SERVICE_LOCATOR
+- Fixed build tests
+- Removed define WSJCPP_EMPLOYEES_VERSION_0_2_0
+- Added define WSJCPP_EMPLOYEES_VERSION_0_2_1
+- Removed define REGISTRY_WSJCPP_SERVICE_LOCATOR
+- Moved all tests for ctest (before exclude dependency wsjcpp_core)
+- Fixed #6 remove dependencies to wsjcpp-core
+
+## [v0.2.0] - 2025-06-29 (2025 July 29)
 
 - Updated wsjcpp-core to v0.2.3 (Up C++ from 11 to 17)
-- Change single name registartion to multiple names
+- Change single name registration to multiple names
 - Added silent mode
 - Added class for simplify init `WsjcppEmployeesInit`
 - Added copyrights to files

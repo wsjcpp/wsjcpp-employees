@@ -1,5 +1,5 @@
 name: "wsjcpp-employees"
-version: "v0.1.3"
+version: v0.2.1
 cmake_minimum_required: "3.5"
 cmake_cxx_standard: "17"
 description: "c++ classes for service-architecture"
@@ -26,20 +26,11 @@ distribution:
     target-file: "generate.WsjcppEmploy.wsjcpp-script"
     type: "safe-scripting-generate"
 
-unit-tests:
-  cases:
-    - name: "Employ1"
-      description: "Test employ1"
-    - name: "EmployRuntimeGlobalCache"
-      description: "WsjcppEmployRuntimeGlobalCache"
-    - name: "CicleDependency"
-      description: "Test on cicle dependency"
-
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.2.3"
+    version: "v0.2.4"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
-    installation-datetime: "Fri, 18 Apr 2025 08:00:53 GMT"
+    installation-datetime: "Thu, 05 Mar 2026 16:41:29 GMT"
 

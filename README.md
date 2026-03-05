@@ -1,6 +1,6 @@
 # wsjcpp-employees
 
-[![Build Status](https://api.travis-ci.org/wsjcpp/wsjcpp-employees.svg?branch=master)](https://travis-ci.org/wsjcpp/wsjcpp-employees) [![Github Stars](https://img.shields.io/github/stars/wsjcpp/wsjcpp-employees.svg?label=github%20%E2%98%85)](https://github.com/wsjcpp/wsjcpp-employees/stargazers) [![Github Stars](https://img.shields.io/github/contributors/wsjcpp/wsjcpp-employees.svg)](https://github.com/wsjcpp/wsjcpp-employees/) [![Github Forks](https://img.shields.io/github/forks/wsjcpp/wsjcpp-employees.svg?label=github%20forks)](https://github.com/wsjcpp/wsjcpp-employees/network/members) [![Total alerts](https://img.shields.io/lgtm/alerts/g/wsjcpp/wsjcpp-employees.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp-employees/alerts/) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/wsjcpp/wsjcpp-employees.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp-employees/context:cpp)
+[![Github Stars](https://img.shields.io/github/stars/wsjcpp/wsjcpp-employees.svg?label=github%20%E2%98%85)](https://github.com/wsjcpp/wsjcpp-employees) [![Github Stars](https://img.shields.io/github/contributors/wsjcpp/wsjcpp-employees.svg)](https://github.com/wsjcpp/wsjcpp-employees/) [![Github Forks](https://img.shields.io/github/forks/wsjcpp/wsjcpp-employees.svg?label=github%20forks)](https://github.com/wsjcpp/wsjcpp-employees/network/members) [![Total alerts](https://img.shields.io/lgtm/alerts/g/wsjcpp/wsjcpp-employees.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp-employees/alerts/) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/wsjcpp/wsjcpp-employees.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp-employees/context:cpp)
 
 C++ classes for service-architecture
 
@@ -13,8 +13,6 @@ $ wsjcpp install https://github.com/wsjcpp/wsjcpp-employees:master
 
 or include this files:
 
-- src.wsjcpp/wsjcpp_core/wsjcpp_core.h
-- src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp
 - src/wsjcpp_employees.h
 - src/wsjcpp_employees.cpp
 
@@ -27,6 +25,30 @@ Example main func:
 #include <wsjcpp_core.h>
 #include <wsjcpp_employees.h>
 
+// logger
+class EmployeesLogger : public IWsjcppEmployeesLogger {
+public:
+  virtual void info(const std::string &tag, const std::string &message) override {
+    WsjcppLog::info(tag, message);
+  }
+
+  virtual void ok(const std::string &tag, const std::string &message) override {
+    WsjcppLog::ok(tag, message);
+  }
+
+  virtual void warn(const std::string &tag, const std::string &message) override {
+    WsjcppLog::warn(tag, message);
+  }
+
+  virtual void err(const std::string &tag, const std::string &message) override {
+    WsjcppLog::err(tag, message);
+  }
+
+  virtual void throw_err(const std::string &tag, const std::string &message) override {
+    WsjcppLog::throw_err(tag, message);
+  }
+};
+
 int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
@@ -36,11 +58,12 @@ int main(int argc, const char* argv[]) {
     }
     WsjcppLog::setPrefixLogFile("wsjcpp-employees");
     WsjcppLog::setLogDirectory(".logs");
+    WsjcppEmployees::setLogger(new EmployeesLogger());
 
     // init employees
     bool bSilent = false;
-    WsjcppEmployeesInit empls({}, bSilent);
-    if (!empls.inited) {
+    WsjcppEmployeesInit employees({}, bSilent);
+    if (!employees.initialized) {
         WsjcppLog::err(TAG, "Could not init employees");
         return -1;
     }
@@ -53,6 +76,8 @@ Example output:
 % ./wsjcpp-employees
 2020-03-22 11:32:31.750, 0x0x110c21dc0 [INFO] WJSCppEmployRuntimeGlobalCache: init
 2020-03-22 11:32:31.750, 0x0x110c21dc0 [OK] Employees_init: Init WJSCppEmployRuntimeGlobalCache ... OK
+2026-03-05 16:49:45.106, 0x00007139fa6fb740 [INFO] WsjcppEmployRuntimeGlobalCache: deinit
+2026-03-05 16:49:45.106, 0x00007139fa6fb740 [OK] WsjcppEmployees::deinit: WsjcppEmployRuntimeGlobalCache ... DEINIT_OK
 ```
 
 Now you can call from any place:
@@ -120,7 +145,7 @@ Example source-code `src/employ_my_impl.cpp`:
 // ---------------------------------------------------------------------
 // EmployMyImpl
 
-REGISTRY_WJSCPP_SERVICE_LOCATOR(EmployMyImpl)
+REGISTRY_WSJCPP_EMPLOY(EmployMyImpl)
 
 EmployMyImpl::EmployMyImpl()
 : WsjcppEmployBase({IMyImpl::name()}, {}) {
@@ -156,6 +181,13 @@ void EmployMyImpl::doSomething() {
 void someFunc() {
     YourEmploy *pYourEmploy = findWsjcppEmploy<YourEmploy>();
     pYourEmploy->doSomething();
+}
+
+void someFunc2() {
+    // if not found then no call throw exception
+    YourEmploy *pYourEmploy2 = findWsjcppEmploy<YourEmploy2>(false);
+    if (pYourEmploy2)
+        pYourEmploy2->doSomething();
 }
 
 void main() {
