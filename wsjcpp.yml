@@ -26,11 +26,6 @@ distribution:
     target-file: "generate.WsjcppEmploy.wsjcpp-script"
     type: "safe-scripting-generate"
 
-unit-tests:
-  cases:
-    - name: "CycleDependency"
-      description: "Test on cycle dependency"
-
 dependencies:
   - name: "wsjcpp-core"
     version: "v0.2.3"
