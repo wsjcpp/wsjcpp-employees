@@ -12,8 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added define REGISTRY_WSJCPP_EMPLOY
 - fix namings: renamed REGISTRY_WJSCPP_SERVICE_LOCATOR to REGISTRY_WSJCPP_SERVICE_LOCATOR
 - Fix build tests
-- Removed WSJCPP_EMPLOYEES_VERSION_0_2_0 and added WSJCPP_EMPLOYEES_VERSION_0_2_1
-
+- Removed define WSJCPP_EMPLOYEES_VERSION_0_2_0
+- Added define WSJCPP_EMPLOYEES_VERSION_0_2_1
+- Removed define REGISTRY_WSJCPP_SERVICE_LOCATOR
+- Moved all tests for ctest (before exclude dependency wsjcpp_core)
 
 ## [v0.2.0] - 2025-06-29 (2025 July 29)
 
