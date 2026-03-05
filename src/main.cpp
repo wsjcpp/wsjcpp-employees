@@ -1,5 +1,5 @@
 /**********************************************************************************
- * Copyright (c) 2020-2025 Evgenii Sopov <mrseakg@gmail.com>
+ * Copyright (c) 2020-2026 Evgenii Sopov <mrseakg@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,8 @@
  * SOFTWARE.
  *
  ***********************************************************************************/
+
+// Original repository: https://github.com/wsjcpp/wsjcpp-employees
 
 #include "my_impl.h"
 #include <wsjcpp_core.h>
