@@ -1,10 +1,7 @@
-#include "unit_test_employ1.h"
 #include <vector>
+#include <iostream>
 #include <wsjcpp_core.h>
 #include <wsjcpp_employees.h>
-
-// ---------------------------------------------------------------------
-
 
 class Employ1 : public WsjcppEmployBase {
     public:
@@ -22,19 +19,15 @@ class Employ1 : public WsjcppEmployBase {
 
 REGISTRY_WSJCPP_EMPLOY(Employ1)
 
-Employ1::Employ1() 
+Employ1::Employ1()
     : WsjcppEmployBase({Employ1::name()}, {"unit-test-employ1"}) {
     TAG = Employ1::name();
 }
-
-// ---------------------------------------------------------------------
 
 bool Employ1::init(const std::string &sName, bool bSilent) {
     m_sValue = "";
     return true;
 }
-
-// ---------------------------------------------------------------------
 
 bool Employ1::deinit(const std::string &sName, bool bSilent) {
     m_sValue = "";
@@ -47,60 +40,32 @@ void Employ1::set(const std::string &sValue) {
     m_sValue = sValue;
 };
 
-// ---------------------------------------------------------------------
-
 std::string Employ1::get() {
     return m_sValue;
 }
 
-// ---------------------------------------------------------------------
-
-REGISTRY_WSJCPP_UNIT_TEST(UnitTestEmploy1)
-
-UnitTestEmploy1::UnitTestEmploy1()
-    : WsjcppUnitTestBase("UnitTestEmploy1") {
-}
-
-// ---------------------------------------------------------------------
-
-bool UnitTestEmploy1::doBeforeTest() {
-    // nothing
-    return true;
-}
-
-// ---------------------------------------------------------------------
-
-void UnitTestEmploy1::executeTest() {
-    bool bTestSuccess = true;
-
-    WsjcppLog::warn(TAG, "init alone employees");
+int main() {
+    std::cout << "init alone employees" << std::endl;
     bool bResult = WsjcppEmployees::init({});
-    compare("without-employ1", bResult, true);
     if (!bResult) {
-        return;
+        return -1;
     }
     WsjcppEmployRuntimeGlobalCache *pCache = findWsjcppEmploy<WsjcppEmployRuntimeGlobalCache>();
     WsjcppEmployees::deinit();
 
-    // start new 
-
+    // start new
     bResult = WsjcppEmployees::init({"unit-test-employ1"});
-    compare("unit-test-employ1", bResult, true);
     if (!bResult) {
-        return;
+        return -1;
     }
 
     Employ1 *pEmploy1 = findWsjcppEmploy<Employ1>();
 
     pEmploy1->set("test4562132");
-    compare("value", pEmploy1->get(), "test4562132");
+    if (pEmploy1->get() != "test4562132") {
+        return -1;
+    }
 
     WsjcppEmployees::deinit();
-}
-
-// ---------------------------------------------------------------------
-
-bool UnitTestEmploy1::doAfterTest() {
-    // nothing
-    return true;
+    return 0;
 }
