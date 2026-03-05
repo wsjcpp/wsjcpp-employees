@@ -27,6 +27,30 @@ Example main func:
 #include <wsjcpp_core.h>
 #include <wsjcpp_employees.h>
 
+// logger
+class EmployeesLogger : public IWsjcppEmployeesLogger {
+public:
+  virtual void info(const std::string &tag, const std::string &message) override {
+    WsjcppLog::info(tag, message);
+  }
+
+  virtual void ok(const std::string &tag, const std::string &message) override {
+    WsjcppLog::ok(tag, message);
+  }
+
+  virtual void warn(const std::string &tag, const std::string &message) override {
+    WsjcppLog::warn(tag, message);
+  }
+
+  virtual void err(const std::string &tag, const std::string &message) override {
+    WsjcppLog::err(tag, message);
+  }
+
+  virtual void throw_err(const std::string &tag, const std::string &message) override {
+    WsjcppLog::throw_err(tag, message);
+  }
+};
+
 int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
@@ -36,6 +60,7 @@ int main(int argc, const char* argv[]) {
     }
     WsjcppLog::setPrefixLogFile("wsjcpp-employees");
     WsjcppLog::setLogDirectory(".logs");
+    WsjcppEmployees::setLogger(new EmployeesLogger());
 
     // init employees
     bool bSilent = false;
@@ -156,6 +181,13 @@ void EmployMyImpl::doSomething() {
 void someFunc() {
     YourEmploy *pYourEmploy = findWsjcppEmploy<YourEmploy>();
     pYourEmploy->doSomething();
+}
+
+void someFunc2() {
+    // if not found then no call throw exception
+    YourEmploy *pYourEmploy2 = findWsjcppEmploy<YourEmploy2>(false);
+    if (pYourEmploy2)
+        pYourEmploy2->doSomething();
 }
 
 void main() {

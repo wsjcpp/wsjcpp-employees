@@ -27,7 +27,7 @@
 #include <mutex>
 #include <string>
 #include <vector>
-#include <wsjcpp_core.h>
+#include <stdexcept>
 
 #define WSJCPP_EMPLOYEES_VERSION_0_2_1
 #define WSJCPP_EMPLOYEES_VERSION_0_2
@@ -51,6 +51,20 @@ private:
 };
 
 // ---------------------------------------------------------------------
+// IWsjcppEmployeesLogger
+
+class IWsjcppEmployeesLogger {
+public:
+  virtual void info(const std::string &tag, const std::string &message) = 0;
+  virtual void ok(const std::string &tag, const std::string &message) = 0;
+  virtual void warn(const std::string &tag, const std::string &message) = 0;
+  virtual void err(const std::string &tag, const std::string &message) = 0;
+  virtual void throw_err(const std::string &tag, const std::string &message) = 0;
+};
+
+extern IWsjcppEmployeesLogger *g_wsjcppEmployeesLogger;
+
+// ---------------------------------------------------------------------
 // public employees
 
 extern std::map<std::string, WsjcppEmployBase *> *g_pWsjcppEmployees;
@@ -58,12 +72,18 @@ extern std::vector<std::string> *g_pWsjcppInitEmployees;
 
 class WsjcppEmployees {
 public:
+  static void setLogger(IWsjcppEmployeesLogger *logger);
   static void initGlobalVariables();
   static void deinitGlobalVariables();
   static void addEmploy(const std::string &sName, WsjcppEmployBase *pEmploy);
   static bool init(const std::vector<std::string> &vLoadAfter, bool bSilent = false);
   static bool deinit(bool bSilent = false);
   static void recursiveTestDependencies(const std::vector<std::string> &v);
+  static void logInfo(const std::string &tag, const std::string &message);
+  static void logWarning(const std::string &tag, const std::string &message);
+  static void logOk(const std::string &tag, const std::string &message);
+  static void logError(const std::string &tag, const std::string &message);
+  static void logThrowError(const std::string &tag, const std::string &message);
 };
 
 // ---------------------------------------------------------------------
@@ -92,7 +112,7 @@ struct WsjcppEmployeesInit {
 // ---------------------------------------------------------------------
 // findWsjcppEmploy
 
-template <class T> T *findWsjcppEmploy() {
+template <class T> T *findWsjcppEmploy(bool throw_on_error = true) {
   WsjcppEmployees::initGlobalVariables();
   std::string TAG = "findWsjcppEmploy";
   std::string sEmployName = T::name();
@@ -101,11 +121,19 @@ template <class T> T *findWsjcppEmploy() {
     pEmploy = g_pWsjcppEmployees->at(sEmployName);
   }
   if (pEmploy == NULL) {
-    WsjcppLog::throw_err(TAG, "Not found employ " + sEmployName);
+    if (throw_on_error) {
+      std::string err = "Not found employ " + sEmployName;
+      throw std::runtime_error(err);
+    }
+    return NULL;
   }
   T *pTEmploy = dynamic_cast<T *>(pEmploy);
   if (pTEmploy == NULL) {
-    WsjcppLog::throw_err(TAG, "Employ could not cast to T [" + sEmployName + "]");
+    if (throw_on_error) {
+      std::string err = "Employ could not cast to T [" + sEmployName + "]";
+      throw std::runtime_error(err);
+    }
+    return NULL;
   }
   return pTEmploy;
 }

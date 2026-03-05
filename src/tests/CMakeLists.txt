@@ -6,7 +6,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY tests)
 
 # wsjcpp-employees
 list (APPEND TEST_CTF01D_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../wsjcpp_employees.cpp")
-list (APPEND TEST_CTF01D_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../../src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp")
 
 foreach(_TEST ${ALL_TESTS})
     get_filename_component(TESTNAME ${_TEST} NAME_WE)
