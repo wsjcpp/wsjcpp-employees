@@ -85,11 +85,6 @@ struct WsjcppEmployeesInit {
 };
 
 // ---------------------------------------------------------------------
-// RegistryServiceLocator
-#define REGISTRY_WSJCPP_SERVICE_LOCATOR(classname)                                                                     \
-  static classname *pWJSCppRegistryServiceLocator##classname = new classname();
-
-// ---------------------------------------------------------------------
 // RegistryEmploy
 #define REGISTRY_WSJCPP_EMPLOY(classname)                                                                     \
   static classname *pWJSCppRegistryEmploy##classname = new classname();
