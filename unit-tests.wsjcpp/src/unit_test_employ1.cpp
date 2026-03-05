@@ -10,8 +10,8 @@ class Employ1 : public WsjcppEmployBase {
     public:
         Employ1();
         static std::string name() { return "Employ1"; };
-        virtual bool init() override;
-        virtual bool deinit() override;
+        virtual bool init(const std::string &sName, bool bSilent) override;
+        virtual bool deinit(const std::string &sName, bool bSilent) override;
 
         void set(const std::string &sValue);
         std::string get();
@@ -29,21 +29,21 @@ Employ1::Employ1()
 
 // ---------------------------------------------------------------------
 
-bool Employ1::init() {
+bool Employ1::init(const std::string &sName, bool bSilent) {
     m_sValue = "";
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool Employ1::deinit() {
+bool Employ1::deinit(const std::string &sName, bool bSilent) {
     m_sValue = "";
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-void Employ1::set(const std::string &sValue) { 
+void Employ1::set(const std::string &sValue) {
     m_sValue = sValue;
 };
 

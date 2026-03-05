@@ -32,8 +32,8 @@ unit-tests:
       description: "Test employ1"
     - name: "EmployRuntimeGlobalCache"
       description: "WsjcppEmployRuntimeGlobalCache"
-    - name: "CicleDependency"
-      description: "Test on cicle dependency"
+    - name: "CycleDependency"
+      description: "Test on cycle dependency"
 
 dependencies:
   - name: "wsjcpp-core"
