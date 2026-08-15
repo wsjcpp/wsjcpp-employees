@@ -2,6 +2,7 @@
 tmp/*
 wsjcpp-employees
 .vscode/*
+!.vscode/settings.json
 .logs/*
 build/*
 unit-tests.wsjcpp/*.log
