@@ -31,9 +31,9 @@
 #include <vector>
 #include <stdexcept>
 
-#define WSJCPP_EMPLOYEES_VERSION_0_2_1
-#define WSJCPP_EMPLOYEES_VERSION_0_2
 #define WSJCPP_EMPLOYEES_VERSION_0
+#define WSJCPP_EMPLOYEES_VERSION_0_2
+#define WSJCPP_EMPLOYEES_VERSION_0_2_2
 
 // ---------------------------------------------------------------------
 // base employ class

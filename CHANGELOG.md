@@ -5,6 +5,10 @@ All notable changes to wsjcpp-yaml project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.2] - 2026-08-15 (2026 Aug 15)
+
+- Updated wsjcpp-core to v0.3.0
+
 ## [v0.2.1] - 2026-03-05 (2026 March 5)
 
 - Fixed: renamed 'recoursiveTestDependencies' to 'recursiveTestDependencies'
